@@ -1,0 +1,7 @@
+services:
+  hospital-erp:
+    build: .
+    container_name: hospital-erp
+    ports:
+      - "3000:80"
+    restart: always
