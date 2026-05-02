@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next';
 import {
   LayoutDashboard, UserPlus, CalendarDays, ListOrdered, Stethoscope,
   Pill, FlaskConical, ShieldCheck, Receipt, Wallet, BarChart3, Users,
-  Activity, HeartPulse, Crown, Calculator, ShoppingCart, Boxes, UserCog,
+  HeartPulse, Crown, Calculator, ShoppingCart, Boxes, UserCog,
   Settings as SettingsIcon,
 } from 'lucide-react';
+import logoMark from '../assets/logo-mark.png';
 
 // Strict domain-based access — each role sees ONLY its own domain.
 // Admin sees everything. Dashboard is shared.
@@ -74,12 +75,10 @@ export default function Sidebar({ user }) {
     <aside className="w-64 bg-white border-r border-slate-200 h-full flex flex-col">
       <div className="px-5 py-5 border-b border-slate-200">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-emerald-600 flex items-center justify-center text-white">
-            <Activity size={20} />
-          </div>
+          <img src={logoMark} alt="True Balance" className="w-10 h-10 object-contain" />
           <div>
-            <div className="font-bold text-slate-800 leading-tight">{t('app.title')}</div>
-            <div className="text-xs text-slate-500">{t('app.subtitle')}</div>
+            <div className="font-bold text-slate-800 leading-tight">True Balance</div>
+            <div className="text-xs text-slate-500">{t('app.title')}</div>
           </div>
         </div>
       </div>

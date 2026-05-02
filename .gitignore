@@ -21,6 +21,9 @@ dist-ssr
 hostinger-deploy.zip
 *.zip
 
+# Asset extraction working folders
+_logo_extract/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

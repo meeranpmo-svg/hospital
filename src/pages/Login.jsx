@@ -5,6 +5,8 @@ import { Activity, Globe, Lock, Mail, ShieldCheck, ChevronRight, Loader2, CheckC
 import { login, ssoLogin, getAuthProvider } from '../data/storage';
 import { SEED_USERS, ROLES } from '../data/seed';
 import { setLang } from '../i18n';
+import logoWhite from '../assets/logo-white.png';
+import logoColor from '../assets/logo-color.png';
 
 export default function Login() {
   const { t, i18n } = useTranslation();
@@ -52,18 +54,10 @@ export default function Login() {
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
-      <div className="hidden lg:flex bg-gradient-to-br from-blue-600 via-emerald-600 to-teal-600 text-white p-12 flex-col justify-between relative overflow-hidden">
+      <div className="hidden lg:flex bg-gradient-to-br from-[#0e3d29] via-[#1b5e3f] to-[#2d7a52] text-white p-12 flex-col justify-between relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle at 30% 30%, white 1px, transparent 1px)', backgroundSize: '24px 24px'}} />
         <div className="relative">
-          <div className="flex items-center gap-3 mb-12">
-            <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
-              <Activity size={24} />
-            </div>
-            <div>
-              <div className="text-2xl font-bold">{t('app.title')}</div>
-              <div className="text-white/80 text-sm">{t('app.subtitle')}</div>
-            </div>
-          </div>
+          <img src={logoWhite} alt="True Balance" className="h-24 mb-12 object-contain" />
           <h1 className="text-4xl font-bold leading-tight mb-4">
             Modern, bilingual Hospital ERP for Saudi healthcare.
           </h1>
@@ -94,6 +88,7 @@ export default function Login() {
 
         <div className="flex-1 flex items-center justify-center">
           <div className="w-full max-w-md">
+            <img src={logoColor} alt="True Balance" className="h-14 mb-6 object-contain lg:hidden" />
             <h2 className="text-3xl font-bold text-slate-900 mb-2">{t('login.title')}</h2>
             <p className="text-slate-500 mb-2">
               {provider === 'azure_ad'
