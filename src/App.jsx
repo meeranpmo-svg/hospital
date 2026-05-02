@@ -22,9 +22,16 @@ import SupplyChain from './pages/SupplyChain';
 import HR from './pages/HR';
 import Settings from './pages/Settings';
 
+// Vite injects import.meta.env.BASE_URL based on `base` in vite.config.js.
+// For root or relative deploys it's '/' or './' → empty basename.
+// For GitHub Pages subpath ('/hospital/') it becomes '/hospital'.
+const BASENAME = import.meta.env.BASE_URL.startsWith('/')
+  ? import.meta.env.BASE_URL.replace(/\/$/, '')
+  : '';
+
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={BASENAME}>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route element={<Layout />}>
