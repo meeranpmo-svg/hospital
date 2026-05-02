@@ -34,3 +34,5 @@ _logo_extract/
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
