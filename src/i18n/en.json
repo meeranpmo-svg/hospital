@@ -38,7 +38,12 @@
     "billing": "Billing",
     "cashier": "Cashier",
     "finance": "Finance Reports",
-    "users": "Users & Roles"
+    "accounting": "Accounting",
+    "purchase": "Purchase Dept",
+    "supply": "Supply Chain",
+    "hr": "Human Resources",
+    "users": "Users & Roles",
+    "settings": "Settings"
   },
   "dashboard": {
     "patientsToday": "Patients Today",

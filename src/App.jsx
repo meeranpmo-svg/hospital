@@ -16,6 +16,11 @@ import Finance from './pages/Finance';
 import NurseStation from './pages/NurseStation';
 import ChiefDashboard from './pages/ChiefDashboard';
 import Users from './pages/Users';
+import Accounting from './pages/Accounting';
+import Purchase from './pages/Purchase';
+import SupplyChain from './pages/SupplyChain';
+import HR from './pages/HR';
+import Settings from './pages/Settings';
 
 export default function App() {
   return (
@@ -37,7 +42,12 @@ export default function App() {
           <Route path="/billing"                element={<Billing />} />
           <Route path="/cashier"                element={<Cashier />} />
           <Route path="/finance"                element={<Finance />} />
+          <Route path="/accounting"             element={<Accounting />} />
+          <Route path="/purchase"               element={<Purchase />} />
+          <Route path="/supply"                 element={<SupplyChain />} />
+          <Route path="/hr"                     element={<HR />} />
           <Route path="/users"                  element={<Users />} />
+          <Route path="/settings"               element={<Settings />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

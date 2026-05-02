@@ -3,20 +3,45 @@ import { useTranslation } from 'react-i18next';
 import {
   LayoutDashboard, UserPlus, CalendarDays, ListOrdered, Stethoscope,
   Pill, FlaskConical, ShieldCheck, Receipt, Wallet, BarChart3, Users,
-  Activity, HeartPulse, Crown,
+  Activity, HeartPulse, Crown, Calculator, ShoppingCart, Boxes, UserCog,
+  Settings as SettingsIcon,
 } from 'lucide-react';
 
+// Strict domain-based access — each role sees ONLY its own domain.
+// Admin sees everything. Dashboard is shared.
 const ROLE_NAV = {
-  admin:              ['dashboard','registration','appointments','queue','pharmacy','lab','insurance','billing','cashier','finance','users'],
-  doctor:             ['dashboard','doctorDashboard','queue','pharmacy','lab'],
-  chief_doctor:       ['dashboard','chiefDashboard','doctorDashboard','queue','lab','finance'],
+  admin:              ['dashboard','registration','appointments','queue','doctorDashboard','chiefDashboard','nurseStation','pharmacy','lab','insurance','billing','cashier','finance','accounting','purchase','supply','hr','users','settings'],
+
+  // Clinical domain
+  doctor:             ['dashboard','doctorDashboard','queue'],
+  chief_doctor:       ['dashboard','chiefDashboard','doctorDashboard','queue'],
   nurse:              ['dashboard','nurseStation','queue'],
-  receptionist:       ['dashboard','registration','appointments','queue','billing'],
+
+  // Front office
+  receptionist:       ['dashboard','registration','appointments','queue'],
+
+  // Pharmacy domain only
   pharmacist:         ['dashboard','pharmacy'],
+
+  // Lab domain only
   lab_tech:           ['dashboard','lab'],
-  finance:            ['dashboard','finance','billing'],
-  cashier:            ['dashboard','cashier','billing'],
-  insurance_approval: ['dashboard','insurance','billing'],
+
+  // Finance domain (finance reports + accounting + billing all live in finance)
+  finance:            ['dashboard','finance','accounting','billing'],
+  accountant:         ['dashboard','accounting','finance','billing'],
+  cashier:            ['dashboard','cashier'],
+
+  // Insurance domain only
+  insurance_approval: ['dashboard','insurance'],
+
+  // Procurement domain only
+  purchase_officer:   ['dashboard','purchase'],
+
+  // Supply chain / inventory domain only
+  inventory_manager:  ['dashboard','supply'],
+
+  // HR domain only
+  hr_manager:         ['dashboard','hr'],
 };
 
 const NAV_ITEMS = {
@@ -33,7 +58,12 @@ const NAV_ITEMS = {
   billing:          { to: '/billing',         icon: Receipt,         key: 'nav.billing',          color: 'text-yellow-600' },
   cashier:          { to: '/cashier',         icon: Wallet,          key: 'nav.cashier',          color: 'text-cyan-600' },
   finance:          { to: '/finance',         icon: BarChart3,       key: 'nav.finance',          color: 'text-yellow-700' },
+  accounting:       { to: '/accounting',      icon: Calculator,      key: 'nav.accounting',       color: 'text-amber-700' },
+  purchase:         { to: '/purchase',        icon: ShoppingCart,    key: 'nav.purchase',         color: 'text-indigo-600' },
+  supply:           { to: '/supply',          icon: Boxes,           key: 'nav.supply',           color: 'text-lime-700' },
+  hr:               { to: '/hr',              icon: UserCog,         key: 'nav.hr',               color: 'text-fuchsia-600' },
   users:            { to: '/users',           icon: Users,           key: 'nav.users',            color: 'text-slate-700' },
+  settings:         { to: '/settings',        icon: SettingsIcon,    key: 'nav.settings',         color: 'text-slate-700' },
 };
 
 export default function Sidebar({ user }) {
