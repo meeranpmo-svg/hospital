@@ -1,0 +1,37 @@
+# Caddy v2 config for Hospital ERP production deploy.
+# SITE_ADDRESS and ACME_EMAIL come from the .env file (loaded by docker-compose).
+#
+# SITE_ADDRESS examples:
+#   :80                  → plain HTTP on port 80, any host (use when no domain)
+#   hospital.foo.com     → HTTPS automatically provisioned via Let's Encrypt
+#   hospital.foo.com, www.hospital.foo.com  → multiple hostnames
+#
+# Caddy stores certs in /data (mounted as a docker volume), so HTTPS survives
+# container restarts.
+
+{
+	email {$ACME_EMAIL}
+	# Uncomment for staging certs while testing (avoids Let's Encrypt rate limits):
+	# acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+{$SITE_ADDRESS} {
+	encode gzip zstd
+
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options       SAMEORIGIN
+		Referrer-Policy       strict-origin-when-cross-origin
+		Permissions-Policy    "geolocation=(), microphone=(), camera=()"
+		# HSTS — only enable once HTTPS works reliably (browsers cache this):
+		# Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+	}
+
+	reverse_proxy hospital-erp:80
+
+	# Optional access log (comment out for less noise):
+	log {
+		output stdout
+		format console
+	}
+}

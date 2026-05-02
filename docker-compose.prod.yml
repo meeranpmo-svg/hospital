@@ -1,0 +1,45 @@
+# Production stack for VPS deployment.
+# - Builds the Vite/React app and serves it from the existing Nginx container
+# - Adds Caddy as a reverse proxy in front, which handles HTTP→HTTPS,
+#   automatic Let's Encrypt cert provisioning, and security headers
+#
+# Usage on the VPS:
+#   cp .env.example .env       # then edit SITE_ADDRESS and ACME_EMAIL
+#   docker compose -f docker-compose.prod.yml up -d --build
+
+services:
+  hospital-erp:
+    build: .
+    container_name: hospital-erp
+    restart: unless-stopped
+    expose:
+      - "80"   # Internal-only — Caddy proxies to it. No host port mapping.
+    networks:
+      - web
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: hospital-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"   # HTTP/3 support
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data       # cert storage — IMPORTANT for HTTPS persistence across restarts
+      - caddy_config:/config
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-:80}
+      ACME_EMAIL:   ${ACME_EMAIL:-admin@example.com}
+    depends_on:
+      - hospital-erp
+    networks:
+      - web
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  web:
