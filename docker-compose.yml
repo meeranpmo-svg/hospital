@@ -1,7 +1,19 @@
+# Simple deployment — single container behind whatever reverse proxy
+# you happen to have (Nginx Proxy Manager, Traefik, manual Nginx, or none).
+#
+# Port is configurable via .env or shell env:
+#   HOST_PORT=8086 docker compose up -d
+# Or create a .env file with:
+#   HOST_PORT=8086
+# Default is 3000 (handy for local Docker testing).
+#
+# For a self-contained stack with built-in HTTPS via Caddy (no external
+# reverse proxy needed), see docker-compose.prod.yml instead.
+
 services:
   hospital-erp:
     build: .
     container_name: hospital-erp
     ports:
-      - "3000:80"
+      - "${HOST_PORT:-3000}:80"
     restart: always

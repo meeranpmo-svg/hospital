@@ -1,70 +1,34 @@
 # Deploying Hospital ERP to a VPS
 
-End state: your VPS serves the True Balance Hospital ERP on **port 80** (and **443** for HTTPS once you add a domain). Updates are `git pull && ./deploy.sh`.
+Pick the path that matches your setup:
 
-Stack: Docker Compose runs two containers — the existing **Nginx + Vite build** container (`hospital-erp`) and a **Caddy reverse proxy** in front for TLS, gzip, and security headers.
+- **Option A — VPS already runs Nginx Proxy Manager (NPM) or Traefik.** ← recommended if true
+  Just expose the app container on a free host port and add a proxy host in your existing reverse proxy. Skip to **Option A** below.
 
----
-
-## 0. Before you start — what you need
-
-- A VPS with **Ubuntu 22 / 24 LTS** (or Debian 12). Other distros work too, install commands differ.
-- **Root SSH access** (or a sudo user).
-- **Public IP** of the VPS. (You're using `82.112.237.91`.)
-- **Optional but strongly recommended:** a domain name with an A record pointing to your VPS IP. Without a domain you only get HTTP (no HTTPS). Adding a domain later takes 30 seconds.
+- **Option B — Bare VPS, no reverse proxy yet.**
+  Use the bundled Caddy stack (`docker-compose.prod.yml`) — handles HTTPS automatically. See **Option B** further down.
 
 ---
 
-## 1. SSH in
+# Option A — Behind Nginx Proxy Manager
 
-From your laptop:
+End state: NPM forwards `https://your-subdomain.com` → `http://172.17.0.1:8086` (the Hospital ERP container). NPM handles HTTPS via Let's Encrypt; the app container only speaks plain HTTP internally.
+
+## A1. SSH in
 
 ```bash
 ssh root@82.112.237.91
 ```
 
-Everything below runs **on the VPS**, not on your laptop.
-
----
-
-## 2. Install Docker (one-time, ~2 min)
-
-Ubuntu / Debian:
+## A2. Install Docker (skip if already installed)
 
 ```bash
-# Update package index
-apt update && apt upgrade -y
-
-# Install Docker (official one-liner script)
-curl -fsSL https://get.docker.com | sh
-
-# Verify
-docker --version
-docker compose version
-
-# Install git if not present
+docker --version || curl -fsSL https://get.docker.com | sh
 apt install -y git
+docker compose version
 ```
 
----
-
-## 3. Open firewall ports 80 + 443
-
-If `ufw` is enabled (default on most VPS images):
-
-```bash
-ufw allow 22/tcp   # keep SSH open!
-ufw allow 80/tcp   # HTTP
-ufw allow 443/tcp  # HTTPS
-ufw --force enable
-ufw status
-```
-
-If `ufw` is NOT installed and there's a **provider-level firewall** (Hostinger, DO, Hetzner all have one in their web dashboard), open **80**, **443**, and keep **22** open in that dashboard instead. Cloud firewalls override OS firewalls.
-
----
-
-## 4. Clone the repo
+## A3. Clone the repo
 
 ```bash
 cd /opt
@@ -72,107 +36,128 @@ git clone https://github.com/meeranpmo-svg/hospital.git
 cd hospital
 ```
 
----
-
-## 5. Configure the environment
+## A4. Set the host port
 
 ```bash
-cp .env.example .env
-nano .env
+echo "HOST_PORT=8086" > .env
 ```
 
-Edit two lines:
+(Or copy the full template: `cp .env.example .env && nano .env`. The only line that matters for the NPM path is `HOST_PORT`.)
 
-| If you have... | Set... |
-|---|---|
-| **No domain yet** | `SITE_ADDRESS=:80` (default — leave as-is). Site will be reachable at `http://82.112.237.91`. |
-| **A domain** (e.g. `hospital.truebalance.sa`) | `SITE_ADDRESS=hospital.truebalance.sa` and `ACME_EMAIL=you@truebalance.sa`. Caddy auto-fetches a Let's Encrypt cert on first launch. **The DNS A record must already point to `82.112.237.91`** before launching, or cert provisioning fails. |
+## A5. Build and start
 
-Save (Ctrl+O, Enter, Ctrl+X).
+```bash
+docker compose up -d --build
+```
+
+First run takes 2–4 minutes (Node + Nginx Alpine + npm ci + vite build).
+
+Verify it's listening:
+
+```bash
+docker compose ps                        # should show hospital-erp Up
+curl -I http://localhost:8086             # should return HTTP 200 + nginx
+```
+
+## A6. Add the proxy host in NPM
+
+In the NPM dashboard (the screenshot you shared):
+
+1. Click **"Add Proxy Host"** (top right)
+2. **Details** tab:
+   - **Domain Names:** pick a subdomain — e.g. `hospital.srv1568872.hstgr.cloud` or `truebalance.srv1568872.hstgr.cloud` or `82-112-237-91.nip.io` style
+   - **Scheme:** `http`
+   - **Forward Hostname / IP:** `172.17.0.1` (matches your other apps — that's the Docker bridge gateway)
+   - **Forward Port:** `8086`
+   - **Cache Assets:** ✅ on
+   - **Block Common Exploits:** ✅ on
+   - **Websockets Support:** ✅ on (harmless)
+3. **SSL** tab:
+   - **SSL Certificate:** `Request a new SSL Certificate`
+   - **Force SSL:** ✅ on
+   - **HTTP/2 Support:** ✅ on
+   - **Email:** your email
+   - Tick "I agree to the Let's Encrypt Terms"
+4. Click **Save**
+
+NPM provisions the cert in 30–60 seconds. New row appears with green "Online" status.
+
+## A7. Open your site
+
+`https://hospital.srv1568872.hstgr.cloud` (or whichever subdomain you chose). True Balance login should appear.
+
+Login as `admin@hospital.com` / `Admin@123`.
+
+## A8. Future updates
+
+After pushing code from your laptop, on the VPS:
+
+```bash
+cd /opt/hospital && ./deploy.sh
+```
+
+Pulls latest from GitHub, rebuilds, restarts. ~30 seconds for incremental builds. NPM keeps proxying — nothing to change there.
 
 ---
 
-## 6. Launch the stack
+# Option B — Bare VPS, use bundled Caddy
+
+Use this if you do NOT already have a reverse proxy running.
 
 ```bash
+ssh root@82.112.237.91
+docker --version || curl -fsSL https://get.docker.com | sh
+apt install -y git
+ufw allow 22/tcp && ufw allow 80/tcp && ufw allow 443/tcp && ufw --force enable
+
+cd /opt
+git clone https://github.com/meeranpmo-svg/hospital.git
+cd hospital
+cp .env.example .env
+nano .env
+# Set:
+#   SITE_ADDRESS=hospital.yourdomain.com   (or :80 for HTTP-only on the IP)
+#   ACME_EMAIL=you@yourdomain.com
+
 docker compose -f docker-compose.prod.yml up -d --build
 ```
 
-First time takes 2–4 minutes (downloads Node Alpine, Nginx Alpine, Caddy Alpine, runs `npm ci` + `npm run build`).
+Caddy auto-fetches the Let's Encrypt cert in ~30 seconds and serves on 80 + 443.
 
-Watch the logs to confirm:
-
-```bash
-docker compose -f docker-compose.prod.yml logs -f
-```
-
-You should see:
-- `hospital-erp` Nginx serving on port 80 internally
-- `hospital-caddy` listening on `:80` (and `:443` if domain configured)
-- If using a domain: a Let's Encrypt certificate handshake line
-
-Press **Ctrl+C** to exit logs (containers keep running in background).
+For full Option B detail (firewall, troubleshooting, etc.) see the **Troubleshooting** section below.
 
 ---
 
-## 7. Open your site
+# Future updates from your laptop
 
-- **No domain:** http://82.112.237.91
-- **With domain:** https://your-domain (note `https`, Caddy redirects automatically)
+1. Edit code locally
+2. `git push` from your machine
+3. SSH in: `ssh root@82.112.237.91`
+4. `cd /opt/hospital && ./deploy.sh`
 
-You should see the **True Balance** login page.
-
----
-
-## 8. Future updates (after pushing code from your laptop)
-
-On the VPS:
-
-```bash
-cd /opt/hospital
-./deploy.sh
-```
-
-That's it — pulls latest from GitHub, rebuilds, restarts. Total ~30 seconds for incremental builds.
+`deploy.sh` works for both Options A and B (it just rebuilds whatever compose file is currently in use — defaults to `docker-compose.prod.yml`; for Option A you may want to edit `deploy.sh` to drop the `-f docker-compose.prod.yml` flag, or replace it with the basic compose).
 
 ---
 
-## 9. Adding HTTPS later (if you started without a domain)
-
-1. Buy / point a domain at `82.112.237.91` (DNS A record)
-2. Wait for DNS propagation (`dig your-domain` should show your VPS IP)
-3. On the VPS:
-   ```bash
-   cd /opt/hospital
-   nano .env   # change SITE_ADDRESS to your domain, set ACME_EMAIL
-   docker compose -f docker-compose.prod.yml up -d
-   ```
-4. Caddy fetches the cert on next request. Done.
-
----
-
-## Troubleshooting
+# Troubleshooting
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `bind: address already in use` on port 80 | Another web server (default Apache/Nginx) is running | `systemctl stop apache2 nginx; systemctl disable apache2 nginx` |
-| Can reach site from VPS but not from internet | Firewall blocks 80/443 | Check `ufw status` and your cloud provider's firewall dashboard |
-| HTTPS handshake fails / "your connection isn't private" | DNS not pointing to VPS yet, or rate limited by Let's Encrypt | `dig your-domain` to confirm A record. Use staging CA first by uncommenting the `acme_ca` line in `Caddyfile`. |
-| `docker: command not found` | Docker install failed | Re-run step 2 |
-| Container restarts in a loop | Build error | `docker compose -f docker-compose.prod.yml logs hospital-erp` |
-| Need to start over | Wipe volumes too | `docker compose -f docker-compose.prod.yml down -v` |
+| `bind: address already in use` on port 8086 | Another app already grabbed that port | Pick a different free port: `echo HOST_PORT=8087 > .env && docker compose up -d` |
+| Container starts but NPM still shows offline | NPM can't reach `172.17.0.1:8086` | From inside the NPM container, test: `docker exec -it <npm-container> wget -qO- http://172.17.0.1:8086 \| head`. If that fails, your hospital-erp container isn't actually bound to `0.0.0.0:8086`. Check `docker compose ps` and `ss -tlnp \| grep 8086`. |
+| HTTPS handshake fails after adding proxy host in NPM | DNS A record for the subdomain isn't pointing to your VPS yet, or Let's Encrypt rate limited | `dig hospital.srv1568872.hstgr.cloud +short` from your laptop should return `82.112.237.91`. Hostinger's `srvXXXX.hstgr.cloud` subdomains usually resolve automatically. |
+| Site loads but assets 404 | App was built with wrong base path | The bundled `docker-compose.yml` builds with `base: './'` (relative paths) — works at any URL. If you customized this, check `vite.config.js`. |
+| Container restart loop | npm install or build error | `docker compose logs hospital-erp` |
+| Need to nuke everything and start over | — | `docker compose down -v && docker compose up -d --build` |
 
 ---
 
-## Server hygiene (one-time setup, optional but recommended)
+# Server hygiene (one-time, optional)
 
 ```bash
 # Auto-update OS security patches
 apt install -y unattended-upgrades
 dpkg-reconfigure --priority=low unattended-upgrades
-
-# Disable root SSH password login (use SSH keys only) — only after you confirm key login works:
-# nano /etc/ssh/sshd_config  →  set `PasswordAuthentication no`  →  systemctl restart sshd
 
 # Set timezone (KSA = Asia/Riyadh)
 timedatectl set-timezone Asia/Riyadh
