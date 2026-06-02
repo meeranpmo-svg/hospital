@@ -48,7 +48,7 @@ export default function Dashboard() {
     { key: 'patientsToday',  value: state.patients.length, icon: Users,    color: 'blue',    bg: 'from-blue-500 to-blue-600' },
     { key: 'appointments',   value: todaysAppts.length,    icon: Calendar, color: 'emerald', bg: 'from-emerald-500 to-emerald-600' },
     { key: 'waitingQueue',   value: waiting,               icon: Clock,    color: 'amber',   bg: 'from-amber-500 to-orange-600' },
-    { key: 'revenue',        value: `${totalRevenue} SAR`, icon: DollarSign, color: 'teal',  bg: 'from-teal-500 to-cyan-600' },
+    { key: 'revenue',        value: `₹${totalRevenue.toLocaleString('en-IN')}`, icon: DollarSign, color: 'teal',  bg: 'from-teal-500 to-cyan-600' },
   ];
 
   const QUICK_ALL = [
@@ -72,8 +72,8 @@ export default function Dashboard() {
       <div className="rounded-2xl bg-gradient-to-r from-blue-600 via-emerald-600 to-teal-600 text-white p-6 shadow-lg">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-2xl font-bold">{t('app.welcome')}, {i18n.language === 'ar' ? user.nameAr : user.name} 👋</h1>
-            <p className="text-white/90 mt-1">Today is {new Date().toLocaleDateString(i18n.language === 'ar' ? 'ar-SA' : 'en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            <h1 className="text-2xl font-bold">{t('app.welcome')}, {user.name} 👋</h1>
+            <p className="text-white/90 mt-1">Today is {new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
           </div>
           <div className="bg-white/15 backdrop-blur px-4 py-2 rounded-xl text-sm capitalize border border-white/20">
             Role: {user.role.replace('_',' ')}
@@ -155,7 +155,7 @@ export default function Dashboard() {
                   {n.type === 'lab' && <FlaskConical size={14} className="text-orange-600 mt-0.5" />}
                   {n.type === 'insurance' && <ShieldCheck size={14} className="text-teal-600 mt-0.5" />}
                   <div className="flex-1">
-                    <div className="font-medium text-slate-800">{i18n.language === 'ar' ? n.titleAr : n.title}</div>
+                    <div className="font-medium text-slate-800">{n.title}</div>
                     <div className="text-xs text-slate-600 mt-0.5">{n.desc}</div>
                   </div>
                 </div>

@@ -60,7 +60,7 @@ export default function Queue() {
           <button onClick={() => setFilterDept('all')} className={`px-3 py-1.5 rounded-lg text-sm font-medium ${filterDept === 'all' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-700'}`}>All</button>
           {DEPARTMENTS.map(d => (
             <button key={d.key} onClick={() => setFilterDept(d.key)} className={`px-3 py-1.5 rounded-lg text-sm font-medium ${filterDept === d.key ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-700'}`}>
-              {i18n.language === 'ar' ? d.nameAr : d.name}
+              {d.name}
             </button>
           ))}
         </div>
@@ -77,7 +77,7 @@ export default function Queue() {
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold text-slate-800 capitalize flex items-center gap-2">
                   <span className={`w-2 h-2 rounded-full bg-${deptInfo?.color || 'slate'}-500`} />
-                  {i18n.language === 'ar' ? deptInfo?.nameAr : deptInfo?.name}
+                  {deptInfo?.name}
                   <span className="text-sm font-normal text-slate-500">({list.length})</span>
                 </h3>
                 <span className="text-sm text-slate-500 flex items-center gap-1">

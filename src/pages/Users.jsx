@@ -53,7 +53,7 @@ export default function Users() {
                 return (
                   <tr key={u.id} className="border-b border-slate-100 hover:bg-slate-50">
                     <td className="py-2 px-3">
-                      <div className="font-medium text-slate-800">{i18n.language === 'ar' ? u.nameAr : u.name}</div>
+                      <div className="font-medium text-slate-800">{u.name}</div>
                     </td>
                     <td className="py-2 px-3 text-sm text-slate-600">{u.email}</td>
                     <td className="py-2 px-3">

@@ -99,7 +99,7 @@ export default function PatientFile() {
       <div className="card border-l-4 border-l-emerald-500">
         <div className="flex items-start justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-slate-800">{i18n.language === 'ar' ? patient.nameAr : patient.name}</h1>
+            <h1 className="text-2xl font-bold text-slate-800">{patient.name}</h1>
             <div className="text-sm text-slate-500 mt-1">
               {patient.mrn} · {patient.gender} · {patient.nationality} · {new Date().getFullYear() - new Date(patient.dob).getFullYear()}y · {patient.bloodGroup}
             </div>
@@ -215,7 +215,7 @@ export default function PatientFile() {
                 {LAB_TESTS.map(test => (
                   <label key={test.code} className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer text-sm ${labTests.includes(test.code) ? 'bg-orange-100 text-orange-800' : 'bg-slate-50 text-slate-700'}`}>
                     <input type="checkbox" checked={labTests.includes(test.code)} onChange={() => toggleLab(test.code)} />
-                    {i18n.language === 'ar' ? test.nameAr : test.name}
+                    {test.name}
                   </label>
                 ))}
               </div>
@@ -226,7 +226,7 @@ export default function PatientFile() {
             <h3 className="font-semibold text-slate-800 mb-3">{t('doctor.referral')}</h3>
             <select className="input" value={refDept} onChange={e => setRefDept(e.target.value)}>
               <option value="">— None —</option>
-              {DEPARTMENTS.map(d => <option key={d.key} value={d.key}>{i18n.language === 'ar' ? d.nameAr : d.name}</option>)}
+              {DEPARTMENTS.map(d => <option key={d.key} value={d.key}>{d.name}</option>)}
             </select>
           </div>
 

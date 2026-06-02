@@ -63,7 +63,7 @@ export default function Lab() {
             <div key={lab.id} className={`card border-l-4 ${lab.status === 'completed' ? 'border-l-emerald-500' : 'border-l-orange-500'}`}>
               <div className="flex items-start justify-between flex-wrap gap-3 mb-3">
                 <div>
-                  <div className="font-semibold text-slate-800">{i18n.language === 'ar' ? p?.nameAr : p?.name}</div>
+                  <div className="font-semibold text-slate-800">{p?.name}</div>
                   <div className="text-xs text-slate-500">{p?.mrn} · {lab.date}</div>
                 </div>
                 <div className="flex gap-2">
@@ -77,7 +77,7 @@ export default function Lab() {
                   const test = LAB_TESTS.find(x => x.code === code);
                   return (
                     <div key={code} className="p-3 rounded-lg bg-slate-50 border border-slate-100">
-                      <div className="font-medium text-slate-800 text-sm">{test ? (i18n.language === 'ar' ? test.nameAr : test.name) : code}</div>
+                      <div className="font-medium text-slate-800 text-sm">{test ? (test.name) : code}</div>
                       <div className="text-xs text-slate-500">{test?.code} · {test?.category}</div>
                       {lab.results?.[code] && <div className="mt-2 text-sm text-slate-700 p-2 bg-white rounded border border-slate-200">{lab.results[code]}</div>}
                     </div>

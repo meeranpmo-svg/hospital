@@ -28,7 +28,7 @@ export default function SupplyChain() {
         <Stat label="Total SKUs"      value={state.supplyItems.length}                                         color="lime" />
         <Stat label="Warehouses"      value={state.warehouses.length}                                          color="green" />
         <Stat label="Low Stock Items" value={lowStock.length}                                                  color="rose" />
-        <Stat label="Inventory Value" value={`${state.supplyItems.reduce((s, i) => s + i.stock * i.unitCost, 0).toLocaleString()} SAR`} color="emerald" />
+        <Stat label="Inventory Value" value={`${state.supplyItems.reduce((s, i) => s + i.stock * i.unitCost, 0).toLocaleString()}`} color="emerald" />
       </div>
 
       {lowStock.length > 0 && (
@@ -134,7 +134,7 @@ function Warehouses({ state }) {
             </div>
             <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between">
               <span className="text-sm text-slate-500">Inventory value</span>
-              <span className="font-semibold text-slate-800">{value.toLocaleString()} SAR</span>
+              <span className="font-semibold text-slate-800">{value.toLocaleString()}</span>
             </div>
           </div>
         );

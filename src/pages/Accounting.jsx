@@ -73,7 +73,7 @@ function ChartOfAccounts({ state }) {
               <tr className="text-xs text-slate-500 border-b border-slate-200">
                 <th className="ltr:text-left rtl:text-right py-2 px-3 w-24">Code</th>
                 <th className="ltr:text-left rtl:text-right py-2 px-3">Account Name</th>
-                <th className="ltr:text-right rtl:text-left py-2 px-3 w-40">Balance (SAR)</th>
+                <th className="ltr:text-right rtl:text-left py-2 px-3 w-40">Balance (₹)</th>
               </tr>
             </thead>
             <tbody>
@@ -214,7 +214,7 @@ function AccountsPayable({ state }) {
     <div className="card">
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-semibold text-slate-800">Accounts Payable — Vendor Balances</h3>
-        <div className="text-sm">Total: <b className="text-rose-700">{totalAP.toLocaleString()} SAR</b></div>
+        <div className="text-sm">Total: <b className="text-rose-700">{totalAP.toLocaleString()}</b></div>
       </div>
       <table className="w-full">
         <thead>
@@ -247,7 +247,7 @@ function AccountsReceivable({ state }) {
     <div className="card">
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-semibold text-slate-800">Accounts Receivable — Outstanding Bills + Claims</h3>
-        <div className="text-sm">Total: <b className="text-emerald-700">{totalAR.toLocaleString()} SAR</b></div>
+        <div className="text-sm">Total: <b className="text-emerald-700">{totalAR.toLocaleString()}</b></div>
       </div>
       <table className="w-full">
         <thead>
@@ -291,7 +291,7 @@ function Stat({ label, value, color }) {
     <div className="card relative overflow-hidden">
       <div className={`absolute inset-y-0 ltr:left-0 rtl:right-0 w-1 bg-gradient-to-b ${map[color]}`} />
       <div className="text-lg font-bold">{(value || 0).toLocaleString()}</div>
-      <div className="text-xs text-slate-500 mt-0.5">{label} (SAR)</div>
+      <div className="text-xs text-slate-500 mt-0.5">{label} (₹)</div>
     </div>
   );
 }

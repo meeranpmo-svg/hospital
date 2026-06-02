@@ -47,10 +47,10 @@ export default function Finance() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Stat label="Total Revenue"        value={`${totalRevenue.toLocaleString()} SAR`}   color="emerald" />
-        <Stat label="Insurance Covered"    value={`${insuredRevenue.toLocaleString()} SAR`} color="teal" />
-        <Stat label="Patient Co-pay"       value={`${patientRevenue.toLocaleString()} SAR`} color="amber" />
-        <Stat label="Outstanding"          value={`${outstanding.toLocaleString()} SAR`}    color="rose" />
+        <Stat label="Total Revenue"        value={`${totalRevenue.toLocaleString()}`}   color="emerald" />
+        <Stat label="Insurance Covered"    value={`${insuredRevenue.toLocaleString()}`} color="teal" />
+        <Stat label="Patient Co-pay"       value={`${patientRevenue.toLocaleString()}`} color="amber" />
+        <Stat label="Outstanding"          value={`${outstanding.toLocaleString()}`}    color="rose" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -103,8 +103,8 @@ export default function Finance() {
                 <tr key={b.id} className="border-b border-slate-100">
                   <td className="py-2 px-3 text-sm">{b.date}</td>
                   <td className="py-2 px-3 font-medium">{p?.name}</td>
-                  <td className="py-2 px-3">{b.total} SAR</td>
-                  <td className="py-2 px-3 text-amber-700 font-semibold">{b.patientPays} SAR</td>
+                  <td className="py-2 px-3">{b.total}</td>
+                  <td className="py-2 px-3 text-amber-700 font-semibold">{b.patientPays}</td>
                   <td className="py-2 px-3"><span className="badge badge-warning">0-30 days</span></td>
                 </tr>
               );
@@ -129,7 +129,7 @@ export default function Finance() {
               <div key={c.key} className="p-3 rounded-lg bg-teal-50 border border-teal-200">
                 <div className="font-medium text-teal-800">{c.name}</div>
                 <div className="text-xs text-slate-500" dir="rtl">{c.nameAr}</div>
-                <div className="text-2xl font-bold text-teal-700 mt-1">{sum.toLocaleString()} SAR</div>
+                <div className="text-2xl font-bold text-teal-700 mt-1">{sum.toLocaleString()}</div>
               </div>
             );
           })}

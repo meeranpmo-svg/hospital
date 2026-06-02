@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Hospital Information System",
-    "subtitle": "Smart HIS · CCHI-Ready",
+    "subtitle": "Smart HIS · IRDAI Ready",
     "logout": "Logout",
     "welcome": "Welcome",
     "search": "Search",
@@ -22,7 +22,7 @@
     "signIn": "Sign In",
     "demo": "Demo Accounts",
     "useDemo": "Use this account",
-    "tagline": "Bilingual · Insurance-Ready · Built for KSA"
+    "tagline": "Modern HIS for Chennai · GST-compliant · TPA-ready"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -34,7 +34,7 @@
     "nurseStation": "Nurse Station",
     "pharmacy": "Pharmacy",
     "lab": "Laboratory",
-    "insurance": "Insurance / CCHI",
+    "insurance": "Insurance / TPA",
     "billing": "Billing",
     "cashier": "Cashier",
     "finance": "Finance Reports",
@@ -46,8 +46,8 @@
     "settings": "Settings"
   },
   "dashboard": {
-    "patientsToday": "Patients Today",
-    "appointments": "Appointments",
+    "patientsToday": "Total Patients",
+    "appointments": "Appointments Today",
     "waitingQueue": "Waiting Queue",
     "revenue": "Revenue Today",
     "quickLinks": "Quick Access",
@@ -58,13 +58,13 @@
   "patient": {
     "register": "Register Patient",
     "find": "Find Patient",
-    "mrn": "File Number / MRN",
-    "nationalId": "Saudi National ID",
-    "iqama": "Iqama / Resident ID",
-    "passport": "Passport Number",
-    "phone": "Phone Number",
-    "name": "Full Name (English)",
-    "nameAr": "Full Name (Arabic)",
+    "mrn": "MRN / File No.",
+    "aadhaar": "Aadhaar",
+    "pan": "PAN",
+    "abha": "ABHA ID",
+    "passport": "Passport",
+    "phone": "Mobile Number",
+    "name": "Full Name",
     "dob": "Date of Birth",
     "gender": "Gender",
     "male": "Male",
@@ -73,11 +73,11 @@
     "idType": "ID Type",
     "idNumber": "ID Number",
     "bloodGroup": "Blood Group",
-    "insuranceCompany": "Insurance Company",
+    "insuranceCompany": "Insurer / Scheme",
     "policyNumber": "Policy Number",
-    "cchiId": "CCHI Member ID",
+    "memberId": "Member ID",
     "emergencyContact": "Emergency Contact",
-    "allergies": "Allergies",
+    "allergies": "Known Allergies",
     "saved": "Patient saved successfully"
   },
   "appointment": {
@@ -155,7 +155,7 @@
   },
   "insurance": {
     "eligibility": "Eligibility Check",
-    "checking": "Checking eligibility with insurer...",
+    "checking": "Checking eligibility with insurer / TPA...",
     "eligible": "Eligible",
     "notEligible": "Not Eligible",
     "coverage": "Coverage",
@@ -163,7 +163,7 @@
     "preAuth": "Pre-Authorization",
     "submit": "Submit Pre-Auth",
     "claims": "Claims Management",
-    "compliance": "CCHI Compliance Fields",
+    "compliance": "IRDAI Compliance Fields",
     "approved": "Approved",
     "rejected": "Rejected",
     "pending": "Pending"
@@ -187,8 +187,9 @@
     "collect": "Collect Payment",
     "method": "Payment Method",
     "cash": "Cash",
+    "upi": "UPI",
     "card": "Card",
-    "transfer": "Bank Transfer",
+    "transfer": "NEFT / RTGS",
     "receipt": "Receipt",
     "cashReport": "Daily Cash Report"
   }

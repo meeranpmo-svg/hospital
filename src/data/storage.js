@@ -8,7 +8,7 @@ import {
   SEED_JOB_OPENINGS, SEED_APPLICANTS, SEED_HR_DOCUMENTS, SEED_PERFORMANCE_REVIEWS, SEED_TRAININGS,
 } from './seed';
 
-const KEY = 'hospital_erp_v3';
+const KEY = 'jyothi_erp_v1';
 
 const initialState = () => ({
   users: SEED_USERS,

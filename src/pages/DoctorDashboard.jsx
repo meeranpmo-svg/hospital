@@ -35,7 +35,7 @@ export default function DoctorDashboard() {
           <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center"><Stethoscope size={24} /></div>
           <div>
             <h1 className="text-2xl font-bold">{t('doctor.myPatients')}</h1>
-            <p className="text-white/90 text-sm">{i18n.language === 'ar' ? myDoctor.nameAr : myDoctor.name} · <span className="capitalize">{myDoctor.specialty}</span></p>
+            <p className="text-white/90 text-sm">{myDoctor.name} · <span className="capitalize">{myDoctor.specialty}</span></p>
           </div>
         </div>
       </div>
@@ -78,7 +78,7 @@ export default function DoctorDashboard() {
                 return (
                   <tr key={a.id} className="border-b border-slate-100 hover:bg-emerald-50/40">
                     <td className="py-3 px-3"><TokenDisplay token={a.token} status={a.status} size="sm" /></td>
-                    <td className="py-3 px-3 font-medium text-slate-800">{i18n.language === 'ar' ? p?.nameAr : p?.name}</td>
+                    <td className="py-3 px-3 font-medium text-slate-800">{p?.name}</td>
                     <td className="py-3 px-3 text-slate-600 text-sm">{p?.mrn}</td>
                     <td className="py-3 px-3 text-slate-600 text-sm">{a.time}</td>
                     {isChief && <td className="py-3 px-3 text-slate-600 text-sm">{d?.name}</td>}

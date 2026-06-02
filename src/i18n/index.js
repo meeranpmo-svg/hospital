@@ -1,25 +1,23 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import en from './en.json';
-import ar from './ar.json';
 
-const saved = localStorage.getItem('hospital_lang') || 'en';
-
+// English-only for Jyothi Hospital, Chennai.
+// Tamil / Hindi can be added by dropping a JSON file in this folder
+// and registering it under `resources` below.
 i18n.use(initReactI18next).init({
-  resources: { en: { translation: en }, ar: { translation: ar } },
-  lng: saved,
+  resources: { en: { translation: en } },
+  lng: 'en',
   fallbackLng: 'en',
   interpolation: { escapeValue: false },
 });
 
-document.documentElement.dir = saved === 'ar' ? 'rtl' : 'ltr';
-document.documentElement.lang = saved;
+document.documentElement.dir = 'ltr';
+document.documentElement.lang = 'en';
 
 export function setLang(lang) {
-  localStorage.setItem('hospital_lang', lang);
+  // No-op for now (kept for backward compat with any callers)
   i18n.changeLanguage(lang);
-  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-  document.documentElement.lang = lang;
 }
 
 export default i18n;

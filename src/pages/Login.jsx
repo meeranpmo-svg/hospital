@@ -1,24 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Activity, Globe, Lock, Mail, ShieldCheck, ChevronRight, Loader2, CheckCircle2 } from 'lucide-react';
+import { Hospital, ShieldCheck, Lock, Mail, ChevronRight, Loader2, CheckCircle2, Pill, Stethoscope } from 'lucide-react';
 import { login, ssoLogin, getAuthProvider } from '../data/storage';
-import { SEED_USERS, ROLES } from '../data/seed';
-import { setLang } from '../i18n';
-import logoWhite from '../assets/logo-white.png';
-import logoColor from '../assets/logo-color.png';
+import { SEED_USERS, ROLES, HOSPITAL } from '../data/seed';
 
 export default function Login() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [provider, setProvider] = useState(getAuthProvider());
-  const [email, setEmail] = useState('admin@hospital.com');
+  const [email, setEmail] = useState('admin@jyothihospital.in');
   const [password, setPassword] = useState('Admin@123');
   const [error, setError] = useState('');
-  const [ssoStep, setSsoStep] = useState(null); // null | 'redirecting' | 'authenticating' | 'syncing'
-  const [ssoEmail, setSsoEmail] = useState('admin@hospital.com');
+  const [ssoStep, setSsoStep] = useState(null);
+  const [ssoEmail, setSsoEmail] = useState('admin@jyothihospital.in');
 
-  // Re-read provider on focus (in case admin changed it in another tab)
   useEffect(() => {
     const onFocus = () => setProvider(getAuthProvider());
     window.addEventListener('focus', onFocus);
@@ -50,26 +46,32 @@ export default function Login() {
     setSsoEmail(u.email);
   };
 
-  const toggleLang = () => setLang(i18n.language === 'ar' ? 'en' : 'ar');
-
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
-      <div className="hidden lg:flex bg-gradient-to-br from-[#0e3d29] via-[#1b5e3f] to-[#2d7a52] text-white p-12 flex-col justify-between relative overflow-hidden">
+      <div className="hidden lg:flex bg-gradient-to-br from-rose-700 via-orange-600 to-amber-500 text-white p-12 flex-col justify-between relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle at 30% 30%, white 1px, transparent 1px)', backgroundSize: '24px 24px'}} />
         <div className="relative">
-          <img src={logoWhite} alt="True Balance" className="h-24 mb-12 object-contain" />
+          <div className="flex items-center gap-3 mb-12">
+            <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center shadow-lg">
+              <Hospital size={28} />
+            </div>
+            <div>
+              <div className="text-2xl font-bold leading-tight">{HOSPITAL.name}</div>
+              <div className="text-white/90 text-sm">{HOSPITAL.tagline}</div>
+            </div>
+          </div>
           <h1 className="text-4xl font-bold leading-tight mb-4">
-            Modern, bilingual Hospital ERP for Saudi healthcare.
+            Hospital Information System for {HOSPITAL.name}, Chennai
           </h1>
           <p className="text-white/90 text-lg max-w-md">
-            {t('login.tagline')}
+            Patient care · GST-compliant billing · TPA / Insurance · HR · Inventory · Accounting
           </p>
         </div>
         <div className="relative grid grid-cols-3 gap-3 mt-8">
           {[
-            { label: 'CCHI Integrated', icon: ShieldCheck },
-            { label: 'AR / EN',         icon: Globe },
-            { label: 'M365 SSO Ready',  icon: Activity },
+            { label: 'IRDAI / TPA Ready', icon: ShieldCheck },
+            { label: 'GST Compliant',     icon: Stethoscope },
+            { label: 'M365 SSO Ready',    icon: Pill },
           ].map((f, i) => (
             <div key={i} className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
               <f.icon size={20} className="mb-2" />
@@ -80,15 +82,18 @@ export default function Login() {
       </div>
 
       <div className="flex flex-col p-6 lg:p-12 bg-white">
-        <div className="flex justify-end">
-          <button onClick={toggleLang} className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-slate-100 text-sm">
-            <Globe size={16} /> {i18n.language === 'ar' ? 'English' : 'عربي'}
-          </button>
-        </div>
-
         <div className="flex-1 flex items-center justify-center">
           <div className="w-full max-w-md">
-            <img src={logoColor} alt="True Balance" className="h-14 mb-6 object-contain lg:hidden" />
+            <div className="flex items-center gap-3 mb-6 lg:hidden">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-white">
+                <Hospital size={22} />
+              </div>
+              <div>
+                <div className="font-bold text-slate-800 text-lg">{HOSPITAL.name}</div>
+                <div className="text-xs text-slate-500">{HOSPITAL.address}</div>
+              </div>
+            </div>
+
             <h2 className="text-3xl font-bold text-slate-900 mb-2">{t('login.title')}</h2>
             <p className="text-slate-500 mb-2">
               {provider === 'azure_ad'
@@ -105,19 +110,19 @@ export default function Login() {
                 <div>
                   <label className="label">{t('login.email')}</label>
                   <div className="relative">
-                    <Mail size={16} className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 text-slate-400" />
-                    <input value={email} onChange={(e) => setEmail(e.target.value)} className="input ltr:pl-9 rtl:pr-9" />
+                    <Mail size={16} className="absolute top-1/2 -translate-y-1/2 left-3 text-slate-400" />
+                    <input value={email} onChange={(e) => setEmail(e.target.value)} className="input pl-9" />
                   </div>
                 </div>
                 <div>
                   <label className="label">{t('login.password')}</label>
                   <div className="relative">
-                    <Lock size={16} className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 text-slate-400" />
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input ltr:pl-9 rtl:pr-9" />
+                    <Lock size={16} className="absolute top-1/2 -translate-y-1/2 left-3 text-slate-400" />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input pl-9" />
                   </div>
                 </div>
                 {error && <div className="text-rose-600 text-sm">{error}</div>}
-                <button type="submit" className="btn btn-primary w-full justify-center">
+                <button type="submit" className="btn bg-rose-600 text-white hover:bg-rose-700 w-full justify-center">
                   {t('login.signIn')} <ChevronRight size={16} />
                 </button>
               </form>
@@ -129,7 +134,7 @@ export default function Login() {
                   Sign in with Microsoft
                 </button>
                 <div>
-                  <label className="label text-xs">Sign in as (demo selector — would be the M365 picker in production)</label>
+                  <label className="label text-xs">Sign in as (demo selector)</label>
                   <input value={ssoEmail} onChange={e => setSsoEmail(e.target.value)} className="input font-mono text-sm" />
                 </div>
                 {error && <div className="text-rose-600 text-sm">{error}</div>}
@@ -145,13 +150,13 @@ export default function Login() {
                     <button
                       key={u.id}
                       onClick={() => fillDemo(u)}
-                      className="text-left p-3 rounded-lg border border-slate-200 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+                      className="text-left p-3 rounded-lg border border-slate-200 hover:border-rose-400 hover:bg-rose-50 transition-colors"
                     >
                       <div className="flex items-center gap-2 mb-1">
                         <span className={`w-2 h-2 rounded-full ${role?.color}`} />
                         <span className="text-xs font-medium text-slate-700 capitalize">{u.role.replace('_',' ')}</span>
                       </div>
-                      <div className="text-sm font-medium text-slate-800 truncate">{i18n.language === 'ar' ? u.nameAr : u.name}</div>
+                      <div className="text-sm font-medium text-slate-800 truncate">{u.name}</div>
                       <div className="text-xs text-slate-500 truncate">{u.email}</div>
                     </button>
                   );
@@ -162,14 +167,12 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Microsoft SSO loading overlay */}
       {ssoStep && (
         <div className="fixed inset-0 bg-slate-900/80 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 text-center">
             <svg viewBox="0 0 23 23" className="w-12 h-12 mx-auto mb-4"><rect width="10" height="10" fill="#F25022"/><rect x="11" width="10" height="10" fill="#7FBA00"/><rect y="11" width="10" height="10" fill="#00A4EF"/><rect x="11" y="11" width="10" height="10" fill="#FFB900"/></svg>
             <h3 className="font-bold text-lg text-slate-800 mb-1">Microsoft 365</h3>
             <p className="text-xs text-slate-500 font-mono mb-6">login.microsoftonline.com</p>
-
             <div className="space-y-3 text-left">
               <SsoStep label="Redirecting to Microsoft..." done={['authenticating','syncing'].includes(ssoStep)} active={ssoStep === 'redirecting'}/>
               <SsoStep label="Authenticating identity"     done={['syncing'].includes(ssoStep)}                  active={ssoStep === 'authenticating'}/>

@@ -4,9 +4,9 @@ import {
   LayoutDashboard, UserPlus, CalendarDays, ListOrdered, Stethoscope,
   Pill, FlaskConical, ShieldCheck, Receipt, Wallet, BarChart3, Users,
   HeartPulse, Crown, Calculator, ShoppingCart, Boxes, UserCog,
-  Settings as SettingsIcon,
+  Settings as SettingsIcon, Hospital,
 } from 'lucide-react';
-import logoMark from '../assets/logo-mark.png';
+import { HOSPITAL } from '../data/seed';
 
 // Strict domain-based access — each role sees ONLY its own domain.
 // Admin sees everything. Dashboard is shared.
@@ -74,11 +74,13 @@ export default function Sidebar({ user }) {
   return (
     <aside className="w-64 bg-white border-r border-slate-200 h-full flex flex-col">
       <div className="px-5 py-5 border-b border-slate-200">
-        <div className="flex items-center gap-2">
-          <img src={logoMark} alt="True Balance" className="w-10 h-10 object-contain" />
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-white shadow-md">
+            <Hospital size={22} />
+          </div>
           <div>
-            <div className="font-bold text-slate-800 leading-tight">True Balance</div>
-            <div className="text-xs text-slate-500">{t('app.title')}</div>
+            <div className="font-bold text-slate-800 leading-tight">{HOSPITAL.name}</div>
+            <div className="text-xs text-slate-500">{HOSPITAL.tagline}</div>
           </div>
         </div>
       </div>

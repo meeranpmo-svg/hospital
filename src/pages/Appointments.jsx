@@ -27,14 +27,14 @@ export default function Appointments() {
     setChecking(true);
     setEligibility(null);
     setTimeout(() => {
-      const eligible = !!patient.insurance?.cchiId;
+      const eligible = !!patient.insurance?.policyNumber;
       setEligibility({
         eligible,
         coverage: eligible ? 80 : 0,
-        deductible: eligible ? 50 : 0,
+        deductible: eligible ? 0 : 0,
         company: patient.insurance?.company,
         approvedServices: eligible ? ['Consultation','Lab tests','Pharmacy (formulary)','Imaging (with pre-auth)'] : [],
-        message: eligible ? 'Member is eligible. Co-pay 20% applies.' : 'No CCHI ID — patient pays full amount.',
+        message: eligible ? 'Policy active. Cashless eligible at network hospitals.' : 'No active policy — patient pays full amount.',
       });
       setChecking(false);
     }, 1500);
@@ -64,7 +64,7 @@ export default function Appointments() {
           <PatientSearch onSelect={setPatient} />
           {patient && (
             <div className="card border-l-4 border-l-blue-500">
-              <div className="font-semibold text-slate-800">{i18n.language === 'ar' ? patient.nameAr : patient.name}</div>
+              <div className="font-semibold text-slate-800">{patient.name}</div>
               <div className="text-xs text-slate-500 space-y-0.5 mt-1">
                 <div>{patient.mrn} · {patient.nationality}</div>
                 <div>{patient.phone}</div>
@@ -80,12 +80,12 @@ export default function Appointments() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div><label className="label">{t('appointment.department')}</label>
               <select className="input" value={dept} onChange={(e) => { setDept(e.target.value); setDoctorId(''); }}>
-                {DEPARTMENTS.map(d => <option key={d.key} value={d.key}>{i18n.language === 'ar' ? d.nameAr : d.name}</option>)}
+                {DEPARTMENTS.map(d => <option key={d.key} value={d.key}>{d.name}</option>)}
               </select></div>
             <div><label className="label">{t('appointment.doctor')}</label>
               <select className="input" value={doctorId} onChange={e => setDoctorId(e.target.value)}>
                 <option value="">— Select —</option>
-                {deptDoctors.map(d => <option key={d.id} value={d.id}>{i18n.language === 'ar' ? d.nameAr : d.name}</option>)}
+                {deptDoctors.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
               </select></div>
             <div><label className="label">{t('appointment.date')}</label>
               <input type="date" className="input" value={date} onChange={e => setDate(e.target.value)} /></div>
@@ -116,8 +116,8 @@ export default function Appointments() {
               <div className="flex items-center gap-2">
                 <ShieldCheck size={18} className="text-teal-700" />
                 <div>
-                  <div className="font-semibold text-teal-800">CCHI Insurance Eligibility</div>
-                  <div className="text-xs text-teal-700">Real-time check with insurer (simulated)</div>
+                  <div className="font-semibold text-teal-800">Insurance / TPA Eligibility</div>
+                  <div className="text-xs text-teal-700">Real-time check with insurer / TPA (simulated)</div>
                 </div>
               </div>
               <button onClick={checkEligibility} disabled={!patient || checking} className="btn bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50">
@@ -136,7 +136,7 @@ export default function Appointments() {
                 {eligibility.eligible && (
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3 text-sm">
                     <div><span className="text-slate-500">Coverage: </span><span className="font-semibold">{eligibility.coverage}%</span></div>
-                    <div><span className="text-slate-500">Deductible: </span><span className="font-semibold">{eligibility.deductible} SAR</span></div>
+                    <div><span className="text-slate-500">Deductible: </span><span className="font-semibold">{eligibility.deductible}</span></div>
                     <div><span className="text-slate-500">Insurer: </span><span className="font-semibold capitalize">{eligibility.company}</span></div>
                     <div className="col-span-full text-xs text-slate-600">
                       Approved: {eligibility.approvedServices.join(' · ')}

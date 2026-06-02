@@ -36,7 +36,7 @@ export default function HR() {
         <Stat label="Total Employees"   value={state.employees.length}                                            color="fuchsia" />
         <Stat label="Present Today"     value={`${presentCount} / ${state.employees.length}`}                     color="emerald" />
         <Stat label="Pending Leaves"    value={state.leaveRequests.filter(l => l.status === 'pending').length}    color="amber" />
-        <Stat label="Pending Payroll"   value={`${totalPayroll.toLocaleString()} SAR`}                            color="blue" />
+        <Stat label="Pending Payroll"   value={`${totalPayroll.toLocaleString()}`}                            color="blue" />
         <Stat label="Open Positions"    value={openJobs}                                                          color="indigo" />
         <Stat label="Doc Expiry Alerts" value={expiringDocs}                                                      color="rose" />
       </div>
@@ -93,7 +93,7 @@ function Employees({ state }) {
               <th className="ltr:text-left rtl:text-right py-2 px-3">Designation</th>
               <th className="ltr:text-left rtl:text-right py-2 px-3">Nationality</th>
               <th className="ltr:text-left rtl:text-right py-2 px-3">Joined</th>
-              <th className="ltr:text-right rtl:text-left py-2 px-3">Salary (SAR)</th>
+              <th className="ltr:text-right rtl:text-left py-2 px-3">Salary (₹)</th>
               <th className="ltr:text-right rtl:text-left py-2 px-3">Leave Bal.</th>
             </tr>
           </thead>
@@ -101,7 +101,7 @@ function Employees({ state }) {
             {list.map(e => (
               <tr key={e.id} className="border-b border-slate-100 hover:bg-slate-50">
                 <td className="py-2 px-3 font-mono text-sm">{e.empNo}</td>
-                <td className="py-2 px-3"><div className="font-medium">{i18n.language === 'ar' ? e.nameAr : e.name}</div><div className="text-xs text-slate-500 capitalize">{e.iqamaOrId}</div></td>
+                <td className="py-2 px-3"><div className="font-medium">{e.name}</div><div className="text-xs text-slate-500 capitalize">{e.iqamaOrId}</div></td>
                 <td className="py-2 px-3 text-sm">{e.department}</td>
                 <td className="py-2 px-3 text-sm">{e.designation}</td>
                 <td className="py-2 px-3 text-sm">{e.nationality}</td>
@@ -149,7 +149,7 @@ function Attendance({ state, refresh }) {
             const stClass = status === 'present' ? 'badge-success' : status === 'late' ? 'badge-warning' : status === 'on_leave' ? 'badge-info' : 'badge-danger';
             return (
               <tr key={e.id} className="border-b border-slate-100 hover:bg-slate-50">
-                <td className="py-2 px-3"><div className="font-medium">{i18n.language === 'ar' ? e.nameAr : e.name}</div><div className="text-xs text-slate-500">{e.empNo}</div></td>
+                <td className="py-2 px-3"><div className="font-medium">{e.name}</div><div className="text-xs text-slate-500">{e.empNo}</div></td>
                 <td className="py-2 px-3 text-sm">{e.department}</td>
                 <td className="py-2 px-3 text-sm font-mono">{a?.clockIn || '—'}</td>
                 <td className="py-2 px-3 text-sm font-mono">{a?.clockOut || '—'}</td>
@@ -243,7 +243,7 @@ function Leave({ state, refresh }) {
             const stClass = lr.status === 'approved' ? 'badge-success' : lr.status === 'rejected' ? 'badge-danger' : 'badge-warning';
             return (
               <tr key={lr.id} className="border-b border-slate-100">
-                <td className="py-2 px-3"><div className="font-medium">{i18n.language === 'ar' ? e?.nameAr : e?.name}</div><div className="text-xs text-slate-500">{e?.empNo}</div></td>
+                <td className="py-2 px-3"><div className="font-medium">{e?.name}</div><div className="text-xs text-slate-500">{e?.empNo}</div></td>
                 <td className="py-2 px-3 capitalize">{lr.type}</td>
                 <td className="py-2 px-3 text-sm">{lr.fromDate}</td>
                 <td className="py-2 px-3 text-sm">{lr.toDate}</td>
@@ -325,7 +325,7 @@ function Payroll({ state, refresh }) {
             const e = state.employees.find(x => x.id === p.empId);
             return (
               <tr key={p.id} className="border-b border-slate-100">
-                <td className="py-2 px-3"><div className="font-medium">{i18n.language === 'ar' ? e?.nameAr : e?.name}</div><div className="text-xs text-slate-500">{e?.empNo}</div></td>
+                <td className="py-2 px-3"><div className="font-medium">{e?.name}</div><div className="text-xs text-slate-500">{e?.empNo}</div></td>
                 <td className="py-2 px-3 ltr:text-right rtl:text-left">{p.basic.toLocaleString()}</td>
                 <td className="py-2 px-3 ltr:text-right rtl:text-left">{p.allowances.toLocaleString()}</td>
                 <td className="py-2 px-3 ltr:text-right rtl:text-left text-rose-700">{p.deductions.toLocaleString()}</td>
@@ -441,7 +441,7 @@ function Recruitment({ state, refresh }) {
                 <option>Full-time</option><option>Part-time</option><option>Contract</option><option>Locum</option>
               </select></div>
             <div><label className="label">Openings</label><input type="number" className="input" value={job.openings} onChange={e => setJob({...job, openings:e.target.value})}/></div>
-            <div><label className="label">Salary Range (SAR)</label><input className="input" value={job.salaryRange} onChange={e => setJob({...job, salaryRange:e.target.value})} placeholder="8000-12000"/></div>
+            <div><label className="label">Salary Range (₹)</label><input className="input" value={job.salaryRange} onChange={e => setJob({...job, salaryRange:e.target.value})} placeholder="8000-12000"/></div>
             <div className="md:col-span-2"><label className="label">Description</label><textarea className="input" value={job.description} onChange={e => setJob({...job, description:e.target.value})}/></div>
             <div className="md:col-span-2"><button onClick={submitJob} className="btn bg-fuchsia-700 text-white"><Send size={14}/> Post Opening</button></div>
           </div>
@@ -458,7 +458,7 @@ function Recruitment({ state, refresh }) {
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="text-xs font-mono text-slate-500">{j.code}</div>
-                    <h3 className="font-semibold text-slate-800 mt-1">{i18n.language === 'ar' ? j.titleAr : j.title}</h3>
+                    <h3 className="font-semibold text-slate-800 mt-1">{j.title}</h3>
                     <div className="text-xs text-slate-500">{j.department} · {j.type}</div>
                   </div>
                   <span className={`badge ${stClass}`}>{j.status.replace('_',' ')}</span>
@@ -468,7 +468,7 @@ function Recruitment({ state, refresh }) {
                   <div className="bg-amber-50 p-2 rounded text-center"><div className="font-bold text-amber-700">{aps.length}</div><div className="text-slate-500">Applicants</div></div>
                   <div className="bg-emerald-50 p-2 rounded text-center"><div className="font-bold text-emerald-700">{aps.filter(a => a.stage === 'hired').length}</div><div className="text-slate-500">Hired</div></div>
                 </div>
-                <div className="text-xs text-slate-500 mt-3">Closes: {j.closeDate} · {j.salaryRange} SAR</div>
+                <div className="text-xs text-slate-500 mt-3">Closes: {j.closeDate} · {j.salaryRange}</div>
               </div>
             );
           })}
@@ -479,7 +479,7 @@ function Recruitment({ state, refresh }) {
         <div className="card">
           <button onClick={() => setActiveJob(null)} className="btn btn-ghost text-sm mb-3">← Back to jobs</button>
           <h3 className="font-semibold text-slate-800">{activeJob.title} — Applicants</h3>
-          <div className="text-xs text-slate-500 mb-4">{activeJob.code} · {activeJob.department} · {activeJob.salaryRange} SAR</div>
+          <div className="text-xs text-slate-500 mb-4">{activeJob.code} · {activeJob.department} · {activeJob.salaryRange}</div>
           <ApplicantTable applicants={state.applicants.filter(a => a.jobId === activeJob.id)} stageColor={stageColor} STAGES={STAGES} moveStage={moveStage} reject={reject} hire={hireAsEmployee} />
         </div>
       )}
@@ -617,7 +617,7 @@ function Documents({ state }) {
                 const stClass = d.computed === 'active' ? 'badge-success' : d.computed === 'expiring' ? 'badge-warning' : 'badge-danger';
                 return (
                   <tr key={d.id} className="border-b border-slate-100 hover:bg-slate-50">
-                    <td className="py-2 px-3"><div className="font-medium">{i18n.language === 'ar' ? e?.nameAr : e?.name}</div><div className="text-xs text-slate-500">{e?.empNo}</div></td>
+                    <td className="py-2 px-3"><div className="font-medium">{e?.name}</div><div className="text-xs text-slate-500">{e?.empNo}</div></td>
                     <td className="py-2 px-3 text-sm">{d.type}</td>
                     <td className="py-2 px-3 font-mono text-xs">{d.docNo}</td>
                     <td className="py-2 px-3 text-sm">{d.issueDate}</td>
@@ -678,7 +678,7 @@ function Performance({ state, refresh }) {
             const e = state.employees.find(x => x.id === pr.empId);
             return (
               <tr key={pr.id} className="border-b border-slate-100 hover:bg-slate-50">
-                <td className="py-2 px-3"><div className="font-medium">{i18n.language === 'ar' ? e?.nameAr : e?.name}</div><div className="text-xs text-slate-500">{e?.empNo}</div></td>
+                <td className="py-2 px-3"><div className="font-medium">{e?.name}</div><div className="text-xs text-slate-500">{e?.empNo}</div></td>
                 <td className="py-2 px-3 text-sm">{pr.period}</td>
                 <td className="py-2 px-3">{pr.rating ? <span className="text-amber-500">{'★'.repeat(pr.rating)}{'☆'.repeat(5-pr.rating)}</span> : <span className="text-slate-400 text-xs">— pending —</span>}</td>
                 <td className="py-2 px-3"><span className={`badge ${pr.status === 'completed' ? 'badge-success' : 'badge-warning'}`}>{pr.status}</span></td>
@@ -770,7 +770,7 @@ function Training({ state, refresh }) {
               const stClass = t.status === 'completed' ? 'badge-success' : t.status === 'overdue' ? 'badge-danger' : 'badge-info';
               return (
                 <tr key={t.id} className="border-b border-slate-100 hover:bg-slate-50">
-                  <td className="py-2 px-3"><div className="font-medium">{i18n.language === 'ar' ? e?.nameAr : e?.name}</div><div className="text-xs text-slate-500">{e?.empNo}</div></td>
+                  <td className="py-2 px-3"><div className="font-medium">{e?.name}</div><div className="text-xs text-slate-500">{e?.empNo}</div></td>
                   <td className="py-2 px-3 font-medium">{t.name}</td>
                   <td className="py-2 px-3 text-sm">{t.category}</td>
                   <td className="py-2 px-3 text-sm">{t.assignedDate}</td>

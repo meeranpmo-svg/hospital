@@ -64,7 +64,7 @@ export default function Pharmacy() {
               <div key={rx.id} className={`card border-l-4 ${rx.status === 'dispensed' ? 'border-l-emerald-500' : 'border-l-purple-500'}`}>
                 <div className="flex items-start justify-between flex-wrap gap-3 mb-3">
                   <div>
-                    <div className="font-semibold text-slate-800">{i18n.language === 'ar' ? p?.nameAr : p?.name}</div>
+                    <div className="font-semibold text-slate-800">{p?.name}</div>
                     <div className="text-xs text-slate-500">{p?.mrn} · {rx.date}</div>
                   </div>
                   <span className={`badge ${rx.status === 'dispensed' ? 'badge-success' : 'badge-warning'}`}>{rx.status}</span>
@@ -145,7 +145,7 @@ function DrugInventory() {
               <th className="ltr:text-left rtl:text-right py-2 px-3">{t('pharmacy.stock')}</th>
               <th className="ltr:text-left rtl:text-right py-2 px-3">{t('pharmacy.reorder')}</th>
               <th className="ltr:text-left rtl:text-right py-2 px-3">{t('pharmacy.expiry')}</th>
-              <th className="ltr:text-left rtl:text-right py-2 px-3">Price (SAR)</th>
+              <th className="ltr:text-left rtl:text-right py-2 px-3">Price (₹)</th>
             </tr>
           </thead>
           <tbody>
