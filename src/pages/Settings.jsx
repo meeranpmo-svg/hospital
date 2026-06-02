@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Settings as SettingsIcon, Shield, Cloud, Lock, CheckCircle2, AlertCircle, RefreshCw, ExternalLink } from 'lucide-react';
+import { Settings as SettingsIcon, Shield, Cloud, Lock, CheckCircle2, AlertCircle, RefreshCw, ExternalLink, Info, Mail, Globe, Code2 } from 'lucide-react';
 import { getAuthProvider, setAuthProvider, getAuthConfig, setAuthConfig, loadState } from '../data/storage';
+import { PRODUCT, HOSPITAL } from '../data/seed';
 
 export default function Settings() {
   const { t } = useTranslation();
@@ -191,6 +192,49 @@ export default function Settings() {
             <div className="font-semibold mb-1">Demo mode notice</div>
             <p>Azure AD SSO is currently <b>simulated</b>. The redirect to login.microsoftonline.com is mocked, and accounts are matched by email against the local user store. To enable real SSO, integrate <span className="font-mono bg-white px-1 rounded">@azure/msal-browser</span> and a backend that validates JWT tokens against Microsoft's keys — these come together with the planned Supabase migration.</p>
           </div>
+        </div>
+      </div>
+
+      <div className="card border-l-4 border-l-rose-500">
+        <h2 className="text-lg font-bold text-slate-800 mb-1 flex items-center gap-2">
+          <Info size={20} className="text-rose-600"/> About
+        </h2>
+        <p className="text-sm text-slate-500 mb-4">Platform, vendor, and customer information for this deployment.</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-4 rounded-lg bg-gradient-to-br from-rose-50 to-orange-50 border border-rose-200">
+            <div className="text-xs font-semibold text-rose-700 uppercase tracking-wide mb-2">Platform</div>
+            <div className="font-bold text-lg text-slate-800">{PRODUCT.name}</div>
+            <div className="text-sm text-slate-600 mt-1">{PRODUCT.tagline}</div>
+            <div className="text-xs text-slate-500 mt-3 flex items-center gap-1.5"><Code2 size={12}/> Version {PRODUCT.version}</div>
+          </div>
+
+          <div className="p-4 rounded-lg bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200">
+            <div className="text-xs font-semibold text-slate-700 uppercase tracking-wide mb-2">Developed By</div>
+            <div className="font-bold text-lg text-slate-800">{PRODUCT.developer}</div>
+            <div className="text-sm text-slate-600 mt-1">{PRODUCT.developerCountry}</div>
+            <div className="text-xs text-slate-500 mt-3 space-y-1">
+              <div className="flex items-center gap-1.5"><Globe size={12}/> <a href={PRODUCT.website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{PRODUCT.website.replace(/^https?:\/\//, '')}</a></div>
+              <div className="flex items-center gap-1.5"><Mail size={12}/> <a href={`mailto:${PRODUCT.supportEmail}`} className="text-blue-600 hover:underline">{PRODUCT.supportEmail}</a></div>
+            </div>
+          </div>
+
+          <div className="md:col-span-2 p-4 rounded-lg bg-emerald-50 border border-emerald-200">
+            <div className="text-xs font-semibold text-emerald-700 uppercase tracking-wide mb-2">Deployed For</div>
+            <div className="font-bold text-lg text-slate-800">{HOSPITAL.name}</div>
+            <div className="text-sm text-slate-700">{HOSPITAL.address}</div>
+            <div className="text-xs text-slate-600 mt-2 grid grid-cols-2 md:grid-cols-4 gap-2">
+              <div><span className="text-slate-500">GSTIN:</span> <span className="font-mono">{HOSPITAL.gstin}</span></div>
+              <div><span className="text-slate-500">PAN:</span> <span className="font-mono">{HOSPITAL.pan}</span></div>
+              <div><span className="text-slate-500">MoH Reg:</span> <span className="font-mono">{HOSPITAL.mohRegNo}</span></div>
+              <div><span className="text-slate-500">Drug Lic:</span> <span className="font-mono">{HOSPITAL.drugLicense}</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 pt-4 border-t border-slate-200 text-xs text-slate-500 flex items-center justify-between flex-wrap gap-2">
+          <div>© {PRODUCT.copyrightYear} {PRODUCT.developer}. All rights reserved.</div>
+          <div>Unauthorized copying, modification, or distribution prohibited.</div>
         </div>
       </div>
     </div>

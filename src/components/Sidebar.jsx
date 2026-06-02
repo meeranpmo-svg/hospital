@@ -6,7 +6,7 @@ import {
   HeartPulse, Crown, Calculator, ShoppingCart, Boxes, UserCog,
   Settings as SettingsIcon, Hospital,
 } from 'lucide-react';
-import { HOSPITAL } from '../data/seed';
+import { HOSPITAL, PRODUCT } from '../data/seed';
 
 // Strict domain-based access — each role sees ONLY its own domain.
 // Admin sees everything. Dashboard is shared.
@@ -108,6 +108,11 @@ export default function Sidebar({ user }) {
       <div className="p-3 border-t border-slate-200 text-xs text-slate-500">
         <div className="font-medium text-slate-700">{user?.name}</div>
         <div className="capitalize">{user?.role?.replace('_',' ')}</div>
+      </div>
+
+      <div className="px-3 py-2 border-t border-slate-200 bg-slate-50 text-[10px] leading-tight text-slate-500">
+        <div className="font-semibold text-slate-600">{PRODUCT.shortName} <span className="text-slate-400">v{PRODUCT.version}</span></div>
+        <div>© {PRODUCT.copyrightYear} {PRODUCT.developerShort}, {PRODUCT.developerCountry}</div>
       </div>
     </aside>
   );

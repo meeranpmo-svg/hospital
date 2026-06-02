@@ -5,7 +5,23 @@
 const today = new Date().toISOString().slice(0, 10);
 
 // ─────────────────────────────────────────────────────────────────
-// HOSPITAL — Branding + statutory info
+// PRODUCT — Platform / vendor branding (does NOT change per customer)
+// ─────────────────────────────────────────────────────────────────
+export const PRODUCT = {
+  name: 'Ansha Smart HIS Systems',
+  shortName: 'Ansha Smart HIS',
+  tagline: 'Intelligent Hospital Information System',
+  version: '1.0.0',
+  developer: 'Smart Shield AI Company Private Limited',
+  developerShort: 'Smart Shield AI',
+  developerCountry: 'India',
+  copyrightYear: new Date().getFullYear(),
+  website: 'https://smartshieldai.in',
+  supportEmail: 'support@smartshieldai.in',
+};
+
+// ─────────────────────────────────────────────────────────────────
+// HOSPITAL — Customer (the hospital running this deployment)
 // ─────────────────────────────────────────────────────────────────
 export const HOSPITAL = {
   name: 'Jyothi Hospital',

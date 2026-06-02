@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Hospital, ShieldCheck, Lock, Mail, ChevronRight, Loader2, CheckCircle2, Pill, Stethoscope } from 'lucide-react';
 import { login, ssoLogin, getAuthProvider } from '../data/storage';
-import { SEED_USERS, ROLES, HOSPITAL } from '../data/seed';
+import { SEED_USERS, ROLES, HOSPITAL, PRODUCT } from '../data/seed';
 
 export default function Login() {
   const { t } = useTranslation();
@@ -60,24 +60,34 @@ export default function Login() {
               <div className="text-white/90 text-sm">{HOSPITAL.tagline}</div>
             </div>
           </div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-xs border border-white/20 mb-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-300"/> {PRODUCT.name} · v{PRODUCT.version}
+          </div>
           <h1 className="text-4xl font-bold leading-tight mb-4">
-            Hospital Information System for {HOSPITAL.name}, Chennai
+            {PRODUCT.tagline}<br/>
+            <span className="text-white/80 text-2xl font-medium">Deployed for {HOSPITAL.name}, Chennai</span>
           </h1>
           <p className="text-white/90 text-lg max-w-md">
             Patient care · GST-compliant billing · TPA / Insurance · HR · Inventory · Accounting
           </p>
         </div>
-        <div className="relative grid grid-cols-3 gap-3 mt-8">
-          {[
-            { label: 'IRDAI / TPA Ready', icon: ShieldCheck },
-            { label: 'GST Compliant',     icon: Stethoscope },
-            { label: 'M365 SSO Ready',    icon: Pill },
-          ].map((f, i) => (
-            <div key={i} className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
-              <f.icon size={20} className="mb-2" />
-              <div className="font-medium text-sm">{f.label}</div>
-            </div>
-          ))}
+        <div className="relative">
+          <div className="grid grid-cols-3 gap-3 mt-8">
+            {[
+              { label: 'IRDAI / TPA Ready', icon: ShieldCheck },
+              { label: 'GST Compliant',     icon: Stethoscope },
+              { label: 'M365 SSO Ready',    icon: Pill },
+            ].map((f, i) => (
+              <div key={i} className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
+                <f.icon size={20} className="mb-2" />
+                <div className="font-medium text-sm">{f.label}</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 pt-4 border-t border-white/20 text-xs text-white/70">
+            Developed by <b className="text-white">{PRODUCT.developer}</b> · {PRODUCT.developerCountry}<br/>
+            © {PRODUCT.copyrightYear} All rights reserved · <a href={`mailto:${PRODUCT.supportEmail}`} className="underline hover:text-white">{PRODUCT.supportEmail}</a>
+          </div>
         </div>
       </div>
 
@@ -90,7 +100,7 @@ export default function Login() {
               </div>
               <div>
                 <div className="font-bold text-slate-800 text-lg">{HOSPITAL.name}</div>
-                <div className="text-xs text-slate-500">{HOSPITAL.address}</div>
+                <div className="text-xs text-slate-500">Powered by {PRODUCT.shortName}</div>
               </div>
             </div>
 
@@ -164,6 +174,10 @@ export default function Login() {
               </div>
             </div>
           </div>
+        </div>
+        <div className="lg:hidden text-center text-xs text-slate-500 mt-6 pt-4 border-t border-slate-200">
+          {PRODUCT.name} · v{PRODUCT.version}<br/>
+          Developed by <b>{PRODUCT.developer}</b>, {PRODUCT.developerCountry}
         </div>
       </div>
 

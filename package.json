@@ -1,7 +1,11 @@
 {
-  "name": "hospitalerp",
+  "name": "ansha-smart-his",
+  "productName": "Ansha Smart HIS Systems",
+  "description": "Ansha Smart HIS Systems — Hospital Information System developed by Smart Shield AI Company Private Limited, India.",
+  "author": "Smart Shield AI Company Private Limited <support@smartshieldai.in>",
+  "license": "UNLICENSED",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
